@@ -7,6 +7,7 @@
 ```
 LabVIEW Code for Training/
 ├── Project Inspection Clamp/              # ตัวอย่างงาน Machine Vision วัดขนาดด้วย Clamp
+├── Project Realtime machine vision Project/  # ตัวอย่างงาน Machine Vision แบบ Real-time (Queue State Machine + Vision Assistant)
 ├── Project01 LabVIEW Template  StateMachine Basic/   # เทมเพลต State Machine แบบพื้นฐาน
 ├── Project02 LabVIEW Template EVENT StateMachine/    # เทมเพลต State Machine แบบ Event-Driven
 ├── Shared File (SubVI)/                   # SubVI ที่ใช้ร่วมกันระหว่างโปรเจกต์เทมเพลต
@@ -29,7 +30,22 @@ LabVIEW Code for Training/
 
 **Vision function ที่ใช้:** IMAQ Create/ReadFile/Copy, IMAQ Pattern Match, Clamp (Overlay Results, Separate ROI), Edge Detection เป็นหลัก — ต้องติดตั้ง **NI Vision Development Module** จึงจะเปิดโปรเจกต์และรันได้ครบ
 
-### 2. Project01 LabVIEW Template — StateMachine Basic
+### 2. Project Realtime machine vision Project
+
+ตัวอย่างงาน Machine Vision แบบ **Real-time** ที่ผสาน **Queue-based State Machine** (enqueue/dequeue) เข้ากับสคริปต์จาก **NI Vision Assistant** เพื่อประมวลผลภาพ พัฒนาด้วย **LabVIEW 2025 (25.0)**
+
+- `machine vision app.lvproj` — LabVIEW Project หลัก
+- `MainPC.vi` — VI หลักของแอปพลิเคชัน
+- `subVIs/` — ชุด SubVI ของ Queue State Machine: `initialize_queue.vi`, `enqueue_states.vi`, `dequeue_state.vi`, `DisableEnable.vi`
+- `type defs/` — Type Def ที่ใช้ในโปรเจกต์: `state.ctl`, `task.ctl`, `data.ctl`, `action buttons.ctl`, `mode buttons.ctl`
+- `VAssistant scripts/` — สคริปต์จาก NI Vision Assistant: `detectscript.vascr` (ตรวจจับวัตถุ), `filter.vascr` (ปรับภาพเป็น Grayscale/กรองภาพ)
+- `template.png` — ภาพเทมเพลตสำหรับ Pattern Matching
+- `ImgPost/image.png` — ตัวอย่างภาพผลลัพธ์หลังประมวลผล
+- `documentation/project notes.docx` — เทมเพลตเอกสารประกอบโปรเจกต์ (Application Name, Author, Revision History, Notes) ปัจจุบันยังไม่ได้กรอกข้อมูล
+
+**สถาปัตยกรรม:** Queue-Driven State Machine — ต่อยอดแนวคิดจากสไลด์ `QueuePresentation1.pptx` มาประยุกต์ใช้กับงานตรวจสอบภาพแบบ real-time — ต้องติดตั้ง **NI Vision Development Module** และ **NI Vision Assistant** เพื่อให้ VI ที่เรียกใช้สคริปต์ `.vascr` ทำงานได้ครบ
+
+### 3. Project01 LabVIEW Template — StateMachine Basic
 
 เทมเพลตโครงสร้าง **State Machine พื้นฐาน** (ใช้ While Loop + Case Structure + Shift Register) พัฒนาด้วย **LabVIEW 2025 (25.0)**
 
@@ -39,11 +55,11 @@ LabVIEW Code for Training/
 - `DisableEnable.vi` — ตัวอย่างการ enable/disable ควบคุม UI
 - `LV_SQL_DataLogger.lvlps` — ตัวอย่างการบันทึกข้อมูลลงฐานข้อมูล SQL
 
-### 3. Project02 LabVIEW Template — EVENT StateMachine
+### 4. Project02 LabVIEW Template — EVENT StateMachine
 
 ต่อยอดจาก Project01 โดยปรับให้เป็น **Event-Driven State Machine** (เพิ่ม Event Structure เพื่อจัดการ User Interface Event) พัฒนาด้วย **LabVIEW 2025 (25.0)** มีไฟล์ประกอบเช่นเดียวกับ Project01
 
-### 4. Shared File (SubVI)
+### 5. Shared File (SubVI)
 
 SubVI ตัวอย่างที่ใช้ประกอบการสอนและถูกเรียกใช้ร่วมกันในหลายโปรเจกต์:
 
@@ -55,15 +71,16 @@ SubVI ตัวอย่างที่ใช้ประกอบการส�
 | `Read Voltage.vi` | จำลอง/อ่านค่าแรงดันไฟฟ้า |
 | `Thermometer.vi`, `Thermometer (Demo).vi` | ตัวอย่างการอ่านและแสดงผลอุณหภูมิ |
 
-### 5. ไฟล์ประกอบการสอน (Slides)
+### 6. ไฟล์ประกอบการสอน (Slides)
 
 - `QueuePresentation1.pptx` — สไลด์อธิบายแนวคิด Queue ใน LabVIEW
 - `TempateEvent State Machine .pptx` — สไลด์อธิบายแนวคิด Event State Machine
 
 ## ความต้องการของระบบ (Requirements)
 
-- **LabVIEW 2025 (25.0)** — สำหรับเปิดโปรเจกต์เทมเพลต State Machine (Project01, Project02)
-- **LabVIEW 2021 (21.0)** ขึ้นไป พร้อม **NI Vision Development Module** และ **Vision Assistant** — สำหรับเปิดโปรเจกต์ `Project Inspection Clamp`
+- **LabVIEW 2025 (25.0)** — สำหรับเปิดโปรเจกต์เทมเพลต State Machine (Project01, Project02) และ `Project Realtime machine vision Project`
+- **LabVIEW 2021 (21.0)** ขึ้นไป พร้อม **NI Vision Development Module** — สำหรับเปิดโปรเจกต์ `Project Inspection Clamp`
+- **NI Vision Development Module** และ **NI Vision Assistant** — สำหรับโปรเจกต์ Machine Vision ทั้งสอง (`Project Inspection Clamp`, `Project Realtime machine vision Project`)
 - ระบบปฏิบัติการ Windows (แนะนำให้ตรงกับเวอร์ชัน LabVIEW ที่ใช้พัฒนาไฟล์)
 
 > หมายเหตุ: หากเปิดไฟล์ด้วย LabVIEW เวอร์ชันที่ต่ำกว่าที่ระบุไว้ โปรแกรมจะไม่สามารถเปิดไฟล์ได้ หรือหากเปิดด้วยเวอร์ชันที่สูงกว่า LabVIEW จะทำการแปลง (convert) ไฟล์ให้อัตโนมัติ
@@ -72,8 +89,8 @@ SubVI ตัวอย่างที่ใช้ประกอบการส�
 
 1. Clone หรือดาวน์โหลดโปรเจกต์นี้มาไว้ในเครื่อง
 2. เปิดไฟล์ `.lvproj` ของโปรเจกต์ที่ต้องการศึกษาด้วย LabVIEW
-3. สำหรับ `Project Inspection Clamp` ให้ตรวจสอบว่าติดตั้ง Vision Development Module แล้ว มิฉะนั้น dependency ของ VI ที่เรียกใช้ฟังก์ชัน IMAQ/Clamp จะขึ้นสถานะ broken (ไอคอนกากบาท)
-4. รัน VI หลัก (`main.vi` หรือ `main-inspection-project1.vi`) เพื่อดูการทำงาน
+3. สำหรับโปรเจกต์ Machine Vision (`Project Inspection Clamp`, `Project Realtime machine vision Project`) ให้ตรวจสอบว่าติดตั้ง Vision Development Module / Vision Assistant แล้ว มิฉะนั้น dependency ของ VI ที่เรียกใช้ฟังก์ชัน IMAQ/Clamp หรือสคริปต์ `.vascr` จะขึ้นสถานะ broken (ไอคอนกากบาท)
+4. รัน VI หลัก (`main.vi`, `main-inspection-project1.vi` หรือ `MainPC.vi`) เพื่อดูการทำงาน
 
 ## วัตถุประสงค์
 
